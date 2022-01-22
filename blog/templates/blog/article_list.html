@@ -1,18 +1,22 @@
-{% for article in object_list %}
+{% extends "blog/base.html" %}
 
-    <article>
-        <h2>{{ article.title }}</h2>
-        <div>{{ article.author}}</div>
-        <div>{{ article.publish}}</div>
-        <p>{{ article.content }}</p>
-    </article>
-    <hr>
+{% block main %}
 
+    {% for article in object_list %}
 
-{% empty %}
+            <article>
+                <h2>{{ article.title }}</h2>
+                <div>{{ article.author}}</div>
+                <div>{{ article.publish}}</div>
+                    {{ article.content|linebreaks }}
+            </article>
+            <hr>
 
+        {% empty %}
+            <div>Nothing to show.</div>
+    {% endfor %}
 
-{% endfor %}
+{% endblock %}
 
 
 
