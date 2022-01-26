@@ -15,14 +15,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token
+# from rest_framework.authtoken.views import obtain_auth_token
+from dj_rest_auth.views import PasswordResetConfirmView
 
+from django.urls.conf import re_path
+from api.views import TemplateView1
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include('blog.urls')),
     path("api/", include('api.urls')),
-    path('api/token-auth/', obtain_auth_token),
+    # path('api/token-auth/', obtain_auth_token),
+
+    path('api/rest-auth/', include('dj_rest_auth.urls')),
+    path('api/rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('api/rest-auth/password/reset/confirm/<uidb64>/<token>', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    re_path(
+        r'^account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView1.as_view(template_name='reset.html'),
+        name='account_confirm_email',
+    ),
 
 ]
 
