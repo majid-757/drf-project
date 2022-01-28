@@ -41,13 +41,6 @@ class UserDetail(RetrieveUpdateDestroyAPIView):
 
 
 
-# class RevokeToken(APIView):
-#     permission_classes = (IsAuthenticated,)
-
-#     def delete(self, request):
-#         request.auth.delete()
-#         return Response({"message":"revoked!"})
-
 
 
 class TemplateView1(TemplateResponseMixin, ContextMixin, View):
