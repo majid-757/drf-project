@@ -1,6 +1,6 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
 from django.shortcuts import render
@@ -12,32 +12,41 @@ from .serializers import ArticleSerialiser, UserSerialiser
 
 
 
-class ArticleList(ListCreateAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerialiser
+# class ArticleList(ListCreateAPIView):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerialiser
 
 
 
-class ArticleDetail(RetrieveUpdateDestroyAPIView):
+# class ArticleDetail(RetrieveUpdateDestroyAPIView):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerialiser
+#     permission_classes = (IsStaffOrReadOnly, IsAuthorOrReadOnly)
+
+class ArticleViewSet(ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerialiser
     permission_classes = (IsStaffOrReadOnly, IsAuthorOrReadOnly)
 
+    def get_permissions(self):
+    
+        if self.action in ['list', 'create']:
+            permission_classes = [IsStaffOrReadOnly]
+        else:
+            permission_classes = [IsStaffOrReadOnly, IsAuthorOrReadOnly]
+        return [permission() for permission in permission_classes]
 
 
 
 
 
-class UserList(ListCreateAPIView):
-    queryset = User.objects.all()
+
+class UserViewSet(ModelViewSet):
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerialiser
     permission_classes = (IsSuperUserOrStaffReadOnly,)
 
 
-class UserDetail(RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerialiser
-    permission_classes = (IsSuperUserOrStaffReadOnly,)
 
 
 
