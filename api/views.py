@@ -12,21 +12,22 @@ from .serializers import ArticleSerialiser, UserSerialiser
 
 
 
-# class ArticleList(ListCreateAPIView):
-#     queryset = Article.objects.all()
-#     serializer_class = ArticleSerialiser
-
-
-
-# class ArticleDetail(RetrieveUpdateDestroyAPIView):
-#     queryset = Article.objects.all()
-#     serializer_class = ArticleSerialiser
-#     permission_classes = (IsStaffOrReadOnly, IsAuthorOrReadOnly)
 
 class ArticleViewSet(ModelViewSet):
     queryset = Article.objects.all()
+
     serializer_class = ArticleSerialiser
-    permission_classes = (IsStaffOrReadOnly, IsAuthorOrReadOnly)
+
+    filterset_fields = ['status', 'author__username']
+
+    ordering_fields = ["publish", "status"]
+
+    ordering = ["-publish"]
+
+    search_fields = ["title", "content", "author__username", "author__first_name", "author__last_name"]
+
+
+
 
     def get_permissions(self):
     
