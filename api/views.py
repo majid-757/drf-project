@@ -52,7 +52,6 @@ class UserViewSet(ModelViewSet):
 
 
 
-
 class TemplateView1(TemplateResponseMixin, ContextMixin, View):
     """
     Render a template. Pass keyword arguments from the URLconf to the context.
